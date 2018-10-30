@@ -1,0 +1,201 @@
+#include <iostream>
+#include <conio.h>
+using namespace std;
+
+void quickSort(int * arr, int left, int right) {
+	if (left >= right) {
+		return;
+	}
+
+	int pivot = arr[left];
+	int leftHold = left, rightHold = right;
+
+	while (left != right) {
+
+		while (arr[right] > pivot && left != right ) {
+			right--;
+		}
+		if (left != right) {
+			arr[left] = arr[right];
+			left++;
+		}
+		
+		while (arr[left] < pivot && left != right ) {
+			left++;
+		}
+
+		if (left != right) {
+			arr[right] = arr[left];
+			right--;
+		}
+	}
+
+	arr[left] = pivot;
+	quickSort(arr, leftHold, left);
+	quickSort(arr, left + 1, rightHold);
+
+}
+
+
+
+void merge(int *, int, int, int, int);
+
+void mergeSort(int * arr, int left, int right) {
+
+	if (left >= right) {
+		return;
+	}
+	int mid = (left + right) / 2;
+	mergeSort(arr, left, mid);
+	mergeSort(arr, mid + 1, right);
+	merge(arr, left, mid, mid + 1, right);
+
+}
+
+void merge(int * arr, int leftStart, int leftEnd, int rightStart, int rightEnd) {
+	int temp[100];
+	int tempPos = leftStart;
+	int numElements = (rightEnd - leftStart) + 1;
+
+	while ( ( leftStart <= leftEnd ) && ( rightStart <= rightEnd ) ) {
+		if (arr[leftStart] < arr[rightStart]) {
+			//copy leftstart to temp array
+			temp[tempPos] = arr[leftStart];
+			leftStart++;
+			tempPos++;
+		}
+		else {
+			//copy rightstart to temp array
+			temp[tempPos] = arr[rightStart];
+			rightStart++;
+			tempPos++;
+		}
+	}
+
+	//copy remaining elements of left array if there are some
+	while (leftStart <= leftEnd) {
+		temp[tempPos] = arr[leftStart];
+		leftStart++;
+		tempPos++;
+	}
+
+	//copy remaining elements of right array if there are some
+	while (rightStart <= rightEnd) {
+		temp[tempPos] = arr[rightStart];
+		rightStart++;
+		tempPos++;
+	}
+
+	for (int i = 1; i <= numElements; i++) {
+		arr[rightEnd] = temp[rightEnd];
+		rightEnd--;
+	}
+}
+
+
+
+
+
+
+void insertionSort(int * arr, int size) {
+	for (int i = 0; i < size; i++) {
+		for (int j = 0; j < i; j++) {
+			if (arr[i] < arr[j]) {
+				int temp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = temp;
+			}
+		}
+	 }
+}
+
+void selectionSort(int * arr, int size) {
+
+	for (int i = 0; i < (size - 1); i++) {
+		int min =  i;
+		for (int j = i + 1; j < size; j++) {
+			if (arr[j] < arr[min]) {
+				min = j;
+			}
+		}
+
+		if (i != min) {
+			int temp = arr[i];
+			arr[i] = arr[min];
+			arr[min] = temp;
+		}
+	}
+
+}
+
+
+void bubbleSort( int * arr, int size ) {
+	int passes = size - 1;
+	int cmps = size - 1;
+
+	for (int i = 0; i < passes; i++) {
+		int count = 0;
+		for (int j = 0; j < (cmps - i); j++) {
+			if (arr[j + 1] < arr[j]) {
+				int temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
+				count++;
+			}
+		}
+
+		if (count == 0) {
+			cout << "passes : " << i + 1 << endl;
+			return;
+		}
+
+	}
+
+}
+
+
+
+int binarySearch(int * arr, int size, int key ) {
+
+	int low = 0, high = size - 1;
+	int mid;
+
+	while (low <= high) {
+
+		mid = (low + high) / 2;
+
+		if (arr[mid] == key) {
+			return mid;
+		}
+		
+		if( key < arr[mid]) {
+			high = mid - 1;
+		}
+		else {
+			low = mid + 1;
+		}
+
+	}
+
+	return -1;
+}
+
+int binarySearch(int * arr, int key, int low, int high ) {
+
+	if (low > high) {
+		return -1;
+	}
+
+	int mid = (low + high) / 2;
+	if (arr[mid] == key) {
+		return mid;
+	}
+
+	if (key < arr[mid]) {
+		return binarySearch(arr, key, low, mid - 1);
+	}
+	else {
+		return binarySearch(arr, key, mid +1, high );
+	}
+
+}
